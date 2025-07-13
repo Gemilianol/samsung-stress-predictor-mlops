@@ -1,0 +1,31 @@
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+xgboost
+# scipy
+statsmodels
+#tensorflow
+flask
+flask_cors
+# torch
+# transformers
+# mlflow
+# airflow
+# neo4j
+# fastapi
+# uvicorn
+# docker
+requests
+# beautifulsoup4
+# pydantic
+# kafka-python
+# prometheus-client
+pytest
+# black
+# pre-commit
+ipykernel
+pip
+chardet #For detecting character codification
+# -e .
