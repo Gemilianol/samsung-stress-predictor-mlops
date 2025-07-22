@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InputForm from "./InputForm.jsx";
 import CardResult  from "./CardResult.jsx";
-import ErrorDisplay from "./errorDisplay.jsx";
+import ErrorDisplay from "./ErrorDisplay.jsx";
 
 function App() {
   //  A state variable to hold the data received from the form:

@@ -41,18 +41,30 @@ def predict_input(X: pd.DataFrame) -> np.array:
 
 # if __name__ == '__main__':
     
-#     data = pd.DataFrame({
-#         'heart_max_rate': 102,
-#         'heart_min_rate': 65,
-#         'heart_rate': 86,
-#         'stress_max': 99,
-#         'stress_min':1,
-#         'heart_min_rate_lag1': 57,
-#         'heart_min_rate_lag2':62,
-#         'heart_min_rate_lag3': 69
-#     }, index=[0]) 
-#     # If you use scalar values like these then pass an index value too. 
+    # data = pd.DataFrame({
+    #     'heart_max_rate': 102,
+    #     'heart_min_rate': 65,
+    #     'heart_rate': 86,
+    #     'stress_max': 99,
+    #     'stress_min':1,
+    #     'heart_min_rate_lag1': 57,
+    #     'heart_min_rate_lag2':62,
+    #     'heart_min_rate_lag3': 69
+    # }, index=[0]) 
+    # If you use scalar values like these then pass an index value too. 
     
 #     pred = predict_input(data)
     
 #     print(f'The predicted Stress Score is: {np.round(pred,2)}')
+
+# For Postman request use this:
+# {
+#         "heart_max_rate": 102,
+#         "heart_min_rate": 65,
+#         "heart_rate": 86,
+#         "stress_max": 99,
+#         "stress_min":1,
+#         "heart_min_rate_lag1": 57,
+#         "heart_min_rate_lag2":62,
+#         "heart_min_rate_lag3": 69
+#     }

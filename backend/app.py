@@ -10,9 +10,9 @@ CORS(app) # Enable CORS for all routes (important for development)
 # At the beginning, Flask and React apps will be running on localhost but in 
 # differents ports so CORS allows to communicate each other.
 
-@app.route('/', methods=['GET'])
-def home():
-    return 'The Flask Application is running ONLY as a Backend on port 2000'
+# @app.route('/', methods=['GET'])
+# def home():
+#     return 'The Flask Application is running ONLY as a Backend on port 2000'
 
 # Matches the fetch URL and method from your App.jsx (React frontend).
 @app.route('/predict', methods=['POST'])
@@ -45,4 +45,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=2000)
+    app.run(host='0.0.0.0', port=2000, debug=True) # Flask is listening on all network interfaces (0.0.0.0)

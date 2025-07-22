@@ -30,9 +30,18 @@ function InputForm({dataSubmitted, onError}) {
     async function handleSubmit(event) {
         event.preventDefault(); // Prevent default bahavior of the browser (reloded)
 
+        // Docker Compose automatically assigns DNS names to each service based on 
+        // the services: name in docker-compose.yml.
+        // await fetch('http://localhost:2000/predict' for local development and 
+        // await fetch('http://backend:2000/predict' for Docker 
+        // BUT JavaScript fetch command runs in the user's browser and the browser 
+        // has no idea what the hostname backend means. That name only exists and 
+        // is resolvable on the internal Docker network that your containers share. 
+        // The fetch call is initiated from your browser, which is outside that network.
+        // The browser needs to call an endpoint it can reach, which is your local machine (localhost).
             try {
                 // POST request to the backend:
-                const response = await fetch('http://localhost:2000/predict', 
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/predict`, 
                     {method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
