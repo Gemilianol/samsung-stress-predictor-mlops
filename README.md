@@ -37,7 +37,7 @@ This personal, educational project predicts your **daily stress score in real ti
 
 This is **Version 1 (MVP)**. The following enhancements are planned:
 
-- [ ] CI/CD pipeline (GitHub Actions)
+- [x] CI/CD pipeline (GitHub Actions)
 - [ ] MLflow-based experiment tracking and model registry
 - [ ] Monitoring with Prometheus + Grafana
 - [ ] Orchestration with Airflow or Prefect

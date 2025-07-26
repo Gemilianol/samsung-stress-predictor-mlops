@@ -58,6 +58,7 @@ def data_transformation():
         data.to_csv('data/processed/data.csv', index=False)
         
         print("✅ Lagged dataset saved to data/processed/data.csv")
+        return data
     except Exception as e:
         raise RuntimeError(f'Error happened handling heart dataset => {e}') from e
     

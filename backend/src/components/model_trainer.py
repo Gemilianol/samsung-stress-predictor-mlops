@@ -48,16 +48,16 @@ def train_selected_model():
 
         X_train = data[data['date'] < cutoff_date]
         y_train = X_train['stress_score']
-        X_train.drop(columns=['stress_score'], inplace=True)
+        X_train = X_train.drop(columns=['stress_score'])
 
         X_test = data[data['date'] >= cutoff_date]
         y_test = X_test['stress_score']
-        X_test.drop(columns=['stress_score'], inplace=True)
+        X_test = X_test.drop(columns=['stress_score'])
         
         # Drop the date becuase it's not necessary:
         #So we can safety drop it:
-        X_train.drop(columns='date', inplace=True)
-        X_test.drop(columns='date', inplace=True)
+        X_train = X_train.drop(columns='date')
+        X_test = X_test.drop(columns='date')
         
         # Use a rolling windows strategy as cross-validation
         tscv = TimeSeriesSplit()
@@ -113,6 +113,8 @@ def train_selected_model():
         with open(log_path, "a") as f:
             f.write(f"{datetime.today().strftime('%Y-%m-%d')},XGBRegressor,{rmse},{model_filename}\n")
         print(f"📝 Metrics logged to {log_path}")
+        
+        return bestXGB
         
     except Exception as e:
         raise RuntimeError(f'Error happened when was training the model => {e}') from e
