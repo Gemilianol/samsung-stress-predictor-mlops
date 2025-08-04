@@ -1,2 +1,2 @@
 test:
-	cd backend && PYTHONPATH=. pytest tests/
+	cd backend && PYTHONPATH=. pytest tests/ -s -v

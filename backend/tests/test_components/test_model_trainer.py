@@ -9,9 +9,9 @@ def test_train_model_saves_model():
     train_selected_model()
     
     CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-    # Absolute path => C:\Users\..\..\..\Samsung Health Project\backend\tests
-    # Models dir it's at the same level of test so I need to move backward one step:
-    MODEL_PATH = os.path.join(CURRENT_PATH, '..','models')
+    # Absolute path => C:\Users\..\..\..\Samsung Health Project\backend\tests\test_components
+    # Models dir it's at the same level of test so I need to move backward two steps:
+    MODEL_PATH = os.path.join(CURRENT_PATH, '..', '..','models')
     
     model_paths = glob.glob(f'{str(MODEL_PATH)}/xgb_model_*.pkl')
     model_paths.sort(reverse=True)

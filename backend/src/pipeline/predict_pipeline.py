@@ -13,10 +13,10 @@ def predict_input(X: pd.DataFrame) -> np.array:
     Returns:
         np.array : with the corresponded predictions
     """
+    if X.isna().any().any():
+        raise ValueError('You have to provide all the values to predict your Stress Score')
+    
     try:
-        if X.isna().any().any():
-            raise ValueError('You have to provide all the values to predict your Stress Score')
-        
         CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
         # Absolute path => C:\Users\..\..\..\Samsung Health Project\backend\src\pipeline
         # Models dir it's at the same level of backend so I need to move backward two times:
@@ -25,15 +25,20 @@ def predict_input(X: pd.DataFrame) -> np.array:
         model_paths = glob.glob(f'{str(MODEL_PATH)}/xgb_model_*.pkl')
         model_paths.sort(reverse=True)
         
-        print(model_paths)
-    
         if not model_paths:
             raise FileNotFoundError('👎 No model have been found to predict the request.')
-            
+    
+    # Here we are wrapping the FileNotFoundError from the if statement and returning a RunTimeError
+    except FileNotFoundError as e:
+        raise RuntimeError("📄 Model file not found") from e
+    
+    try:       
         model = joblib.load(model_paths[0]) # Get the most updated model
-        
+    except Exception as e:
+        raise RuntimeError(f"📤 Could not load model: {e}") from e
+
+    try:
         pred = model.predict(X)
-        
         return pred
     
     except Exception as e:

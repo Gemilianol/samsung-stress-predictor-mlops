@@ -20,4 +20,4 @@ def test_load_data_returns_dataframe():
 # To run this from root (Bash): 
 # choco install make (CMD as admin) or 
 # sudo apt update sudo apt install make (Ubuntu) and then 
-# run the Markfile directly through the command => make test
+# run the Markfile directly through the command => make test from the root
