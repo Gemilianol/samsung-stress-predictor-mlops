@@ -23,9 +23,8 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Run tests
-      run: |
-        pytest backend/tests/ -v -s
+    - name: Run tests through Makefile
+      run: make test
     
     # - name: Build Docker image
     #   run: docker build -t stress-app . # Even if you don’t push to Docker Hub, you can build and test your image locally inside the CI
