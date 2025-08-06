@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import numpy as np
+import json
 from datetime import datetime
 from sklearn.model_selection import TimeSeriesSplit, RandomizedSearchCV
 from sklearn.metrics import root_mean_squared_error
@@ -99,6 +100,18 @@ def train_selected_model():
         model_filename = f"models/xgb_model_{datetime.today().strftime('%Y%m%d')}.pkl"
         joblib.dump(bestXGB, model_filename)
         print(f"✅ Model saved to {model_filename}")
+        
+        # Save the feature order
+        feature_order = list(X_train.columns)
+
+        # Save it only if it doesn't already exist
+        feature_order_file = "models/model_features.json"
+        if not os.path.exists(feature_order_file):
+            with open(feature_order_file, "w") as f:
+                json.dump(feature_order, f)
+            print(f"✅ Feature order saved to {feature_order_file}")
+        else:
+            print(f"⚠️ Feature order file already exists. Skipping overwrite.")
 
         # Log metrics
         os.makedirs("logs", exist_ok=True)

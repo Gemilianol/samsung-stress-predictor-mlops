@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS # Needed for cross-origin requests during development
 import pandas as pd
 import numpy as np
+import json
 from src.pipeline.predict_pipeline import predict_input
 import traceback
 
@@ -26,6 +27,13 @@ def predict():
             
             # Then you simply convert the dict to DataFrame:
             data = pd.DataFrame([data], index=[0])
+            
+                # Load feature order
+            with open("models/model_features.json") as f:
+                feature_order = json.load(f)
+            
+            # Reorder columns
+            data = data[feature_order]
             
             # IMPORTANT: all input values which send from the frontend 
             # are string by default:
