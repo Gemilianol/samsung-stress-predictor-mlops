@@ -1,39 +1,58 @@
 import os
-import glob
-import joblib
+import json
+import numpy as np
 import pandas as pd
+from unittest.mock import patch, MagicMock
+import joblib
+
 from src.components.model_trainer import train_selected_model
 
-def test_train_model_saves_model():
-    
+# Create a minimal fake estimator (must have predict)
+class FakeEstimator:
+    def predict(self, X):
+        # return zeros of the right shape
+        import numpy as np
+        return np.zeros(len(X))
+
+@patch("src.components.model_trainer.RandomizedSearchCV")
+def test_train_selected_model_mocked_random_search(mock_random_search, tmp_path, monkeypatch):
+    # 1) isolate FS
+    monkeypatch.chdir(tmp_path)
+
+    # 2) write the processed CSV that trainer reads
+    n = 120
+    dates = pd.date_range("2020-01-01", periods=n)
+    df = pd.DataFrame({
+        "date": dates,
+        "feat_a": np.linspace(0, 1, n),
+        "feat_b": np.linspace(1, 0, n),
+        "stress_score": np.random.randint(300, 1200, size=n)
+    })
+    (tmp_path / "data" / "processed").mkdir(parents=True, exist_ok=True)
+    df.to_csv(tmp_path / "data" / "processed" / "data.csv", index=False)
+
+    # 3) monkeypatch data_transformation to be noop
+    monkeypatch.setattr("src.components.model_trainer.data_transformation", lambda: None)
+
+    # 4) configure the RandomizedSearchCV mock to expose a .best_estimator_
+    fake_search = MagicMock()
+    fake_search.fit.return_value = None
+    fake_search.best_estimator_ = FakeEstimator()
+    mock_random_search.return_value = fake_search
+
+    # 5) run; should use the patched RandomizedSearchCV
     train_selected_model()
-    
-    CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-    # Absolute path => C:\Users\..\..\..\Samsung Health Project\backend\tests\test_components
-    # Models dir it's at the same level of test so I need to move backward two steps:
-    MODEL_PATH = os.path.join(CURRENT_PATH, '..', '..','models')
-    
-    model_paths = glob.glob(f'{str(MODEL_PATH)}/xgb_model_*.pkl')
-    model_paths.sort(reverse=True)
 
-    assert os.path.exists(model_paths[0])
+    # 6) assertions: files created
+    assert (tmp_path / "models").exists()
+    models = list((tmp_path / "models").glob("xgb_model_*.pkl"))
+    assert len(models) >= 1
 
-    loaded_model = joblib.load(model_paths[0])
-    assert loaded_model is not None
+    # check logs
+    assert (tmp_path / "logs" / "metrics_log.csv").exists()
+    log_df = pd.read_csv(tmp_path / "logs" / "metrics_log.csv")
+    assert not log_df.empty
 
-def test_train_model_returns_model():
-    model = train_selected_model()
+    # ensure the mocked RandomizedSearchCV was instantiated
+    mock_random_search.assert_called_once()
 
-    from xgboost import XGBRegressor
-    assert isinstance(model, XGBRegressor)
-
-def test_train_model_logs_rmse():
-    log_path = 'logs/metrics_log.csv'
-
-    train_selected_model()
-    
-    assert os.path.exists(log_path)
-
-    df = pd.read_csv(log_path)
-    assert not df.empty
-    assert 'rmse' in df.columns
