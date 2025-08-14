@@ -19,7 +19,7 @@ logs/
 models/
 
 # Config
-config.py
+# config.py
 
 # VSCode / IDEs
 .vscode/
