@@ -31,21 +31,26 @@ def test_data_transformation_returns_dataframe(mock_load_data, tmp_path, monkeyp
 
     # Also patch DATA_SOURCES inside the module to use 'date' as the merge key
     test_data_sources = {
-        "heart_rate": {
-            "col_date": {"oem": "date", "mod": "date"},
-            "cols_to_keep": [],
-            "prefix": "heart_",
-            "data_type": "heart",
-        },
-        "stress": {
-            "col_date": "date",
-            "cols_to_keep": [],
-            "prefix": "stress_",
-        },
-        "data_transformation": {
+    'stress': {
+        'file_path': '',
+          'cols_to_keep': [],
+          'col_date': 'date',
+          'prefix': 'stress_'
+    },
+    'heart_rate': {
+        'file_path': '',
+              'cols_to_keep':[],
+              'col_date': {'oem':'date',
+                           'mod': 'date'},
+              'prefix': 'heart_',
+              'data_type': 'heart',
+              'new_name_columns': ['date', 'heart_max_rate', 'heart_min_rate','heart_rate'],
+              
+    },
+    'data_transformation': {
         'features_to_lag': ['heart_min_rate']
     }
-    }
+}
     
     # Replace attribute inside a module (handy for patching config objects).
     monkeypatch.setattr("src.components.config.DATA_SOURCES", test_data_sources, raising=False)
@@ -74,21 +79,26 @@ def test_data_transformation_saves_csv(mock_load_data, tmp_path, monkeypatch):
 
     # Also patch DATA_SOURCES inside the module to use 'date' as the merge key
     test_data_sources = {
-        "heart_rate": {
-            "col_date": {"oem": "date", "mod": "date"},
-            "cols_to_keep": [],
-            "prefix": "heart_",
-            "data_type": "heart",
-        },
-        "stress": {
-            "col_date": "date",
-            "cols_to_keep": [],
-            "prefix": "stress_",
-        },
-        "data_transformation": {
+    'stress': {
+        'file_path': '',
+          'cols_to_keep': [],
+          'col_date': 'date',
+          'prefix': 'stress_'
+    },
+    'heart_rate': {
+        'file_path': '',
+              'cols_to_keep':[],
+              'col_date': {'oem':'date',
+                           'mod': 'date'},
+              'prefix': 'heart_',
+              'data_type': 'heart',
+              'new_name_columns': ['date', 'heart_max_rate', 'heart_min_rate','heart_rate'],
+              
+    },
+    'data_transformation': {
         'features_to_lag': ['heart_min_rate']
     }
-    }
+}
     
     monkeypatch.setattr("src.components.config.DATA_SOURCES", test_data_sources, raising=False)
     
