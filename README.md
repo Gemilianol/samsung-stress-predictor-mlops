@@ -31,6 +31,8 @@ This personal, educational project predicts your **daily stress score in real ti
 
 ⚠️ **MLflow** is not integrated in this initial version due to common persistence issues with Docker Compose and volume-based URI management. Retraining is required each time containers restart, which is time-consuming. This will be addressed in future iterations.
 
+⚠️️ **config.py**  src/components/config.py is a placeholder for CI and that production config is kept externally; this documents the approach.
+
 ---
 
 ## 🚧 Development Status
